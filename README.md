@@ -68,3 +68,8 @@ Running 10s test @ http://localhost:3000/hello?name=joe
 Req/Bytes counts sampled once per second.
 
 66k requests in 10.22s, 17.8 MB read
+
+
+# CONTRIBUTE
+
+Feel free to contribute, you may want to add extra endpoints, benchmark against different stacks, etc.

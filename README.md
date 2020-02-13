@@ -45,6 +45,7 @@ Req/Bytes counts sampled once per second.
 ### Rust 2.0
 
 - /hello
+
 autocannon -c 50  http://localhost:3000/hello?name=joe
 Running 10s test @ http://localhost:3000/hello?name=joe
 50 connections

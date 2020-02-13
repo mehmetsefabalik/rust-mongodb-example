@@ -1,6 +1,13 @@
 # ACTIX WEB - MONGODB EXAMPLE
 
-A web server, written in Rust, using actix-web framework. Web server exposes `GET /hello` endpoint, and writes `name` query string value to mongodb as a document(`{name: $name-query-string}`).
+A web server, written in Rust, using actix-web framework.
+
+Web server exposes:
+
+- `GET /hello` endpoint, and writes `name` query string value to mongodb as a document(`{name: $name-query-string}`).
+- `GET /get` endpoint which finds one document from db.
+
+
 
 # HOW TO RUN
 

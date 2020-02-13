@@ -14,3 +14,18 @@ pub fn index(
     .collection("users")
     .insert_one(doc! {"name" => name}, None)
 }
+
+pub fn get(
+  pool: web::Data<Pool<MongodbConnectionManager>>,
+) -> Result<std::option::Option<bson::ordered::OrderedDocument>, mongodb::error::Error> {
+  let stock = pool
+    .get()
+    .expect("can not get pool")
+    .collection("users")
+    .find_one(
+      Some(doc! {}),
+      None
+    )
+    .unwrap();
+  Ok(stock)
+}

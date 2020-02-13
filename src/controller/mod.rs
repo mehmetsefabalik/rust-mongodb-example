@@ -18,3 +18,13 @@ pub async fn index(
   .map_err(|_| HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR));
   Ok(res)
 }
+
+pub async fn get(
+  pool: web::Data<Pool<MongodbConnectionManager>>,
+) -> Result<Result<HttpResponse, HttpResponse>, Error> {
+  let res = web::block(move || crate::service::get(pool))
+    .await
+    .map(|_result| HttpResponse::Ok().json(_result))
+    .map_err(|_| HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR));
+  Ok(res)
+}

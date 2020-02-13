@@ -20,6 +20,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .data(pool.clone())
             .route("/hello", web::get().to(controller::index))
+            .route("/get", web::get().to(controller::get))
     })
     .bind("127.0.0.1:3000")?
     .run()

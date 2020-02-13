@@ -1,6 +1,6 @@
 # ACTIX WEB - MONGODB EXAMPLE
 
-A web server, written in Rust, using actix-web framework. Web server exposes `GET /hello` endpoint, and writes `name` query string value to mongodb as a document(`{name: $name-query-string`).
+A web server, written in Rust, using actix-web framework. Web server exposes `GET /hello` endpoint, and writes `name` query string value to mongodb as a document(`{name: $name-query-string}`).
 
 # HOW TO RUN
 
@@ -44,6 +44,7 @@ Req/Bytes counts sampled once per second.
 
 ### Rust 2.0
 
+- /hello
 autocannon -c 50  http://localhost:3000/hello?name=joe
 Running 10s test @ http://localhost:3000/hello?name=joe
 50 connections
@@ -59,6 +60,24 @@ Avg Req/Sec: 18686.19
 Req/Bytes counts sampled once per second.
 
 206k requests in 11.04s, 16.9 MB read
+
+- /get
+
+autocannon -c 50 http://localhost:3000/get
+Running 10s test @ http://localhost:3000/get
+50 connections
+
+`
+Avg Latency: 1.27 ms
+`
+
+`
+Avg Req/Sec: 18760
+`
+
+Req/Bytes counts sampled once per second.
+
+206k requests in 11.05s, 33.8 MB read
 
 ## NodeJS (clustered using pm2 -- pm2 start main.js -i max)
 

@@ -23,6 +23,8 @@ In order to see the performance of Rust as a web server with I/O bound tasks, I 
 
 ## Rust
 
+### Rust 1.x
+
 autocannon -c 500  http://localhost:3000/hello?name=joe
 Running 10s test @ http://localhost:3000/hello?name=joe
 500 connections
@@ -39,6 +41,24 @@ Req/Bytes counts sampled once per second.
 
 177k requests in 10.14s, 14.2 MB read
 315 errors (293 timeouts)
+
+### Rust 2.0
+
+autocannon -c 50  http://localhost:3000/hello?name=joe
+Running 10s test @ http://localhost:3000/hello?name=joe
+50 connections
+
+`
+Avg Latency: 2.15 ms
+`
+
+`
+Avg Req/Sec: 18686.19
+`
+
+Req/Bytes counts sampled once per second.
+
+206k requests in 11.04s, 16.9 MB read
 
 ## NodeJS (clustered using pm2 -- pm2 start main.js -i max)
 

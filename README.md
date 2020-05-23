@@ -30,7 +30,7 @@ In order to see the performance of Rust as a web server with I/O bound tasks, I 
 
 ## Rust
 
-### Rust 1.x
+### actix-web 1.x
 
 autocannon -c 500  http://localhost:3000/hello?name=joe
 Running 10s test @ http://localhost:3000/hello?name=joe
@@ -49,7 +49,7 @@ Req/Bytes counts sampled once per second.
 177k requests in 10.14s, 14.2 MB read
 315 errors (293 timeouts)
 
-### Rust 2.0
+### actix-web 2.0
 
 - /hello
 

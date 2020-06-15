@@ -1,31 +1,21 @@
-use actix_web::web;
-use mongodb::db::ThreadedDatabase;
-use mongodb::{bson, doc};
-use r2d2::Pool;
-use r2d2_mongodb::MongodbConnectionManager;
+use bson::{doc, ordered::OrderedDocument};
+use mongodb::{error::Error, results::InsertOneResult, Collection};
 
-pub fn index(
-  name: &str,
-  pool: web::Data<Pool<MongodbConnectionManager>>,
-) -> Result<mongodb::coll::results::InsertOneResult, mongodb::error::Error> {
-  pool
-    .get()
-    .expect("can not get pool")
-    .collection("users")
-    .insert_one(doc! {"name" => name}, None)
+#[derive(Clone)]
+pub struct UserService {
+  collection: Collection,
 }
 
-pub fn get(
-  pool: web::Data<Pool<MongodbConnectionManager>>,
-) -> Result<std::option::Option<bson::ordered::OrderedDocument>, mongodb::error::Error> {
-  let stock = pool
-    .get()
-    .expect("can not get pool")
-    .collection("users")
-    .find_one(
-      Some(doc! {}),
-      None
-    )
-    .unwrap();
-  Ok(stock)
+impl UserService {
+  pub fn new(collection: Collection) -> UserService {
+    UserService { collection }
+  }
+
+  pub fn create(&self, name: &str) -> Result<InsertOneResult, Error> {
+    self.collection.insert_one(doc! {"name": name}, None)
+  }
+
+  pub fn get(&self) -> Result<Option<OrderedDocument>, Error> {
+    self.collection.find_one(doc! {}, None)
+  }
 }

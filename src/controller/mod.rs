@@ -1,6 +1,4 @@
-use actix_web::{web, HttpResponse, http, Error};
-use r2d2::Pool;
-use r2d2_mongodb::MongodbConnectionManager;
+use actix_web::{web, HttpResponse, Responder};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -9,22 +7,28 @@ pub struct User {
 }
 
 pub async fn index(
+  app_data: web::Data<crate::AppState>,
   user: web::Query<User>,
-  pool: web::Data<Pool<MongodbConnectionManager>>,
-) -> Result<Result<HttpResponse, HttpResponse>, Error>{
-  let res = web::block(move || crate::service::index(&user.name, pool))
-  .await
-  .map(|_result| HttpResponse::Ok().body("Success"))
-  .map_err(|_| HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR));
-  Ok(res)
+) -> impl Responder {
+  let result = web::block(move || app_data.service_container.user.create(&user.name)).await;
+  match result {
+    Ok(result) => HttpResponse::Ok().json(result.inserted_id),
+    Err(e) => {
+      println!("Error while getting, {:?}", e);
+      HttpResponse::InternalServerError().finish()
+    }
+  }
 }
 
 pub async fn get(
-  pool: web::Data<Pool<MongodbConnectionManager>>,
-) -> Result<Result<HttpResponse, HttpResponse>, Error> {
-  let res = web::block(move || crate::service::get(pool))
-    .await
-    .map(|_result| HttpResponse::Ok().json(_result))
-    .map_err(|_| HttpResponse::new(http::StatusCode::INTERNAL_SERVER_ERROR));
-  Ok(res)
+  app_data: web::Data<crate::AppState>,
+) -> impl Responder {
+  let result = web::block(move || app_data.service_container.user.get()).await;
+  match result {
+    Ok(result) => HttpResponse::Ok().json(result),
+    Err(e) => {
+      println!("Error while getting, {:?}", e);
+      HttpResponse::InternalServerError().finish()
+    }
+  }
 }
